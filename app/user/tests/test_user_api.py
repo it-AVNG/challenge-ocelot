@@ -11,11 +11,13 @@ from rest_framework import status
 
 CREATE_USER_URL = reverse('user:create')
 
+
 def create_user(**params):
     '''create and return a new user'''
     return get_user_model().objects.create_user(**params)
 
 # Public test -Unauthenticated request
+
 
 class PublicUserApiTest(TestCase):
     '''Test the public features of the user API.'''
@@ -53,8 +55,7 @@ class PublicUserApiTest(TestCase):
         create_user(**payload)
 
         res = self.client.post(CREATE_USER_URL, payload)
-        self.assertEqual(res.status_code,status.HTTP_400_BAD_REQUEST)
-
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_too_short(self):
         '''Test error is return for password less then 5 char.'''
@@ -66,7 +67,7 @@ class PublicUserApiTest(TestCase):
         }
 
         res = self.client.post(CREATE_USER_URL, payload)
-        self.assertEqual(res.status_code,status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
         user_exists = get_user_model().objects.filter(
             email=payload['email']
