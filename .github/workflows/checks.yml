@@ -17,5 +17,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Test
         run: docker-compose run --rm app sh -c "wget -qO- https://raw.githubusercontent.com/eficode/wait-for/$WAIT_FOR_VERSION/wait-for | sh -s -- db:5432 -- echo success && python manage.py wait_for_db && python manage.py test"
+        env:
+          WAIT_FOR_VERSION: 4df3f9262d84cab0039c07bf861045fbb3c20ab7 # v2.2.3
       - name: Lint
         run: docker-compose run --rm app sh -c "flake8"
