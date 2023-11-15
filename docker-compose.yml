@@ -17,7 +17,6 @@ services:
       - DB_NAME=postgres
       - DB_USER=devuser
       - DB_PASS=changeme
-    restart: on-failure
     depends_on:
       - db
 
@@ -29,6 +28,11 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
 volumes:
   dev-db-data:
