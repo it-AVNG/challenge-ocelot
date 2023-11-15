@@ -17,6 +17,7 @@ get API schema
 
 /api/user/create/
 /api/user/token/
+/api/user/me/
 
 
 
