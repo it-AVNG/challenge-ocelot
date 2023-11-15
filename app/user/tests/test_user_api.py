@@ -158,7 +158,7 @@ class PrivateUserApiTest(TestCase):
     def test_post_me_not_allowed(self):
         '''Test POST request is not allow for the me endpoint'''
 
-        res = self.client.post(ME_URL,{})
+        res = self.client.post(ME_URL, {})
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
