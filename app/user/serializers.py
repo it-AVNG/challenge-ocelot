@@ -21,12 +21,13 @@ class UserSerializer(serializers.ModelSerializer):
 
         return get_user_model().objects.create_user(**validated_data)
 
+
 class AuthTokenSerializer(serializers.Serializer):
     '''Serializer for the user auth token '''
 
     email = serializers.EmailField()
     password = serializers.CharField(
-        style = {'input_type': 'password'},
+        style={'input_type': 'password'},
         trim_whitespace=False,
     )
 
