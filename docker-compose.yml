@@ -9,9 +9,10 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -c "python manage.py wait_for_db &&
+      sh -c 'python manage.py wait_for_db &&
+             wget -qO- https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for | sh -s -- db:5432 -- echo success &&
              python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+             python manage.py runserver 0.0.0.0:8000'
     environment:
       - DB_HOST=db
       - DB_NAME=postgres
@@ -28,11 +29,6 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
 
 volumes:
   dev-db-data:
