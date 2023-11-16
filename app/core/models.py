@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+
 class Book(models.Model):
     '''Book objects'''
 
