@@ -1,8 +1,12 @@
 '''
 tests for models
 '''
+from decimal import Decimal
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+
+from core import models
 
 
 class ModelTests(TestCase):
@@ -50,3 +54,21 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_book(self):
+        '''test create book successful'''
+
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            'testpass@123',
+        )
+
+        book = models.Book.objects.create(
+            user=user,
+            title='Sample Book title',
+            author='Sample Author',
+            price=Decimal('5.50'),
+            isbn='1234567890123',
+        )
+
+        self.assertEqual(str(book), book.title)
