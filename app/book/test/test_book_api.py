@@ -145,3 +145,25 @@ class PrivateBookAPITests(TestCase):
             self.assertEqual(getattr(book, k), v)
 
         self.assertEqual(book.user, self.user)
+
+    def test_partial_update(self):
+        '''partial update of a book'''
+
+        add_description = 'only a test book'
+
+        book = create_book(
+            user=self.user,
+            title='title sample',
+            description=add_description,
+        )
+
+        payload = {'title': 'new editted title'}
+        url = detail_url(book.id)
+        res = self.client.patch(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        book.refresh_from_db()
+        self.assertEqual(book.title, payload['title'])
+        self.assertEqual(book.description, add_description)
+        self.assertEqual(book.user, self.user)
