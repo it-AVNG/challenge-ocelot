@@ -20,4 +20,3 @@ class BookDetailSerializer(BookSerializer):
 
     class Meta(BookSerializer.Meta):
         fields = BookSerializer.Meta.fields + ['description']
-

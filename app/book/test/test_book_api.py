@@ -91,20 +91,19 @@ class PublicBookAPITests(TestCase):
         url = detail_url(book.id)
 
         res = self.client.get(url)
-        serializer =BookDetailSerializer(book)
+        serializer = BookDetailSerializer(book)
 
-        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
 
     def test_auth_required_to_create_book(self):
         '''POST request is not allow for unauthorized'''
 
         payload = {
-        'title': 'New Book title',
-        'author': 'New author',
-        'isbn': '1231234567890',
-        'price': Decimal('5.50'),
+            'title': 'New Book title',
+            'author': 'New author',
+            'isbn': '1231234567890',
+            'price': Decimal('5.50'),
         }
 
         res = self.client.post(BOOKS_URL, payload)
@@ -131,15 +130,15 @@ class PrivateBookAPITests(TestCase):
     def test_create_book(self):
         '''test creating a book'''
         payload = {
-        'title': 'New Book title',
-        'author': 'New author',
-        'isbn': '1231234567890',
-        'price': Decimal('5.50'),
+            'title': 'New Book title',
+            'author': 'New author',
+            'isbn': '1231234567890',
+            'price': Decimal('5.50'),
         }
 
         res = self.client.post(BOOKS_URL, payload)
 
-        self.assertEqual(res.status_code,status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
         book = Book.objects.get(id=res.data['id'])
         for k, v in payload.items():
