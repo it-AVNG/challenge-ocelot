@@ -29,3 +29,8 @@ class BookViewSet(viewsets.ModelViewSet):
             return serializers.BookSerializer
 
         return self.serializer_class
+
+    def perform_create(self, serializer):
+        '''create new book'''
+
+        serializer.save(user=self.request.user)
