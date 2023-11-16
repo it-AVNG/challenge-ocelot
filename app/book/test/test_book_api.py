@@ -11,10 +11,16 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Book
-from book.serializers import BookSerializer
+from book.serializers import BookSerializer, BookDetailSerializer
 
 
 BOOKS_URL = reverse('book:book-list')
+
+
+def detail_url(book_id):
+    '''return a reverse book detail URL'''
+
+    return reverse('book:book-detail', args=[book_id])
 
 
 def create_user(**params):
@@ -67,6 +73,28 @@ class PublicBookAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(books.count(), 2)
         self.assertEqual(res.data, serializer.data)
+
+    def test_get_book_detail(self):
+        '''test for getting book details'''
+
+        payload = {
+            'email': 'test@example.com',
+            'password': 'testpass@123',
+            'name': 'Test Name2',
+        }
+
+        user = create_user(**payload)
+
+        book = create_book(user=user)
+
+        url = detail_url(book.id)
+
+        res = self.client.get(url)
+        serializer =BookDetailSerializer(book)
+
+        self.assertEqual(res.status_code,status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
 
     # def test_auth_required(self):
     #     '''Test auth is required to POST'''
