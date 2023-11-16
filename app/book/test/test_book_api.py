@@ -167,3 +167,52 @@ class PrivateBookAPITests(TestCase):
         self.assertEqual(book.title, payload['title'])
         self.assertEqual(book.description, add_description)
         self.assertEqual(book.user, self.user)
+
+    def test_full_update_book(self):
+        '''test full update of book'''
+
+        book = create_book (
+            user = self.user,
+            title = 'Book Title',
+            author = 'Old author',
+            isbn = '1234567890321',
+            price = Decimal('5.5'),
+            description = 'just testing description',
+        )
+
+        payload = {
+            'title': 'Book Title',
+            'author': 'Old author',
+            'isbn': '1234567890321',
+            'price': Decimal('2.30'),
+            'description': 'just testing description',
+        }
+
+        url = detail_url(book.id)
+        res = self.client.put(url,payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        book.refresh_from_db()
+        for k, v in payload.items():
+            self.assertEqual(getattr(book, k), v)
+
+        self.assertEqual(book.user, self.user)
+
+    def test_update_user_return_error(self):
+        '''test update user return error'''
+
+        new_user = create_user(
+            email='user2@example.com',
+            password='testpass@123'
+        )
+
+        book = create_book(user=self.user)
+
+        payload = {'user': new_user.id}
+
+        url = detail_url(book.id)
+
+        self.client.patch(url, payload)
+        book.refresh_from_db()
+        self.assertEqual(book.user, self.user)
