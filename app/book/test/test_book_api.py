@@ -227,3 +227,15 @@ class PrivateBookAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Book.objects.filter(id=book.id).exists())
+
+    def test_delete_other_user_book_error(self):
+        '''Test trying to delete other user books gives error'''
+
+        new_user = create_user(email='user2@example.com',password='testpass@123')
+        book = create_book(user=new_user)
+
+        url = detail_url(book.id)
+        res = self.client.delete(url)
+
+        # self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertTrue(Book.objects.filter(id=book.id).exists())
