@@ -19,5 +19,6 @@ class BookDetailSerializer(BookSerializer):
     '''Serializer for book detail view'''
 
     user = serializers.ReadOnlyField(source='user.username')
+
     class Meta(BookSerializer.Meta):
-        fields = BookSerializer.Meta.fields + ['description','user']
+        fields = BookSerializer.Meta.fields + ['description', 'user']

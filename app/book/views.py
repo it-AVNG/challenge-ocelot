@@ -9,6 +9,7 @@ from core.models import Book
 from book import serializers
 from book.permissions import IsOwnerOrReadonly
 
+
 class BookViewSet(viewsets.ModelViewSet):
     '''View for manage book APIs'''
 

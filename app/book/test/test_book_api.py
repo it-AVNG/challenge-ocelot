@@ -171,13 +171,13 @@ class PrivateBookAPITests(TestCase):
     def test_full_update_book(self):
         '''test full update of book'''
 
-        book = create_book (
-            user = self.user,
-            title = 'Book Title',
-            author = 'Old author',
-            isbn = '1234567890321',
-            price = Decimal('5.5'),
-            description = 'just testing description',
+        book = create_book(
+            user=self.user,
+            title='Book Title',
+            author='Old author',
+            isbn='1234567890321',
+            price=Decimal('5.5'),
+            description='just testing description',
         )
 
         payload = {
@@ -189,7 +189,7 @@ class PrivateBookAPITests(TestCase):
         }
 
         url = detail_url(book.id)
-        res = self.client.put(url,payload)
+        res = self.client.put(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
@@ -231,11 +231,14 @@ class PrivateBookAPITests(TestCase):
     def test_delete_other_user_book_error(self):
         '''Test trying to delete other user books gives error'''
 
-        new_user = create_user(email='user2@example.com',password='testpass@123')
+        new_user = create_user(
+            email='user2@example.com',
+            password='testpass@123'
+            )
         book = create_book(user=new_user)
 
         url = detail_url(book.id)
-        res = self.client.delete(url)
+        self.client.delete(url)
 
         # self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
         self.assertTrue(Book.objects.filter(id=book.id).exists())
