@@ -5,7 +5,15 @@ Get health status of the API
 # Book
 Get book list /api/book/
 
-Get,put,patch,delete book /api/book/isbn
+Get,put,patch,delete book
++ Get - list all book
++ Post Create book
+## specific book
+/book/isbn? or /book/id?
++ Get view details of book
++ Put/patch - update book
++ Delete - delete book
+
 
 post image /api/book/isbn/
 
