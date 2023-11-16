@@ -1,7 +1,7 @@
 '''
 Test for book api
 '''
-from decimal import Decimal # noqa
+from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -34,13 +34,14 @@ def create_book(user, **params):
         'title': 'Sample Book title',
         'author': 'Sample author',
         'isbn': '1234567890123',
-        'price': '4.40',
+        'price': Decimal('4.40'),
     }
 
     defaults.update(params)
 
     book = Book.objects.create(user=user, **defaults)
     return book
+
 # public API test
 
 
@@ -96,12 +97,19 @@ class PublicBookAPITests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
 
-    # def test_auth_required(self):
-    #     '''Test auth is required to POST'''
+    def test_auth_required_to_create_book(self):
+        '''POST request is not allow for unauthorized'''
 
-    #     res = self.client.post(BOOK_ID_URL)
+        payload = {
+        'title': 'New Book title',
+        'author': 'New author',
+        'isbn': '1231234567890',
+        'price': Decimal('5.50'),
+        }
 
-    #     self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        res = self.client.post(BOOKS_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 # private API test
 
@@ -119,3 +127,22 @@ class PrivateBookAPITests(TestCase):
         self.user = create_user(**payload)
 
         self.client.force_authenticate(self.user)
+
+    def test_create_book(self):
+        '''test creating a book'''
+        payload = {
+        'title': 'New Book title',
+        'author': 'New author',
+        'isbn': '1231234567890',
+        'price': Decimal('5.50'),
+        }
+
+        res = self.client.post(BOOKS_URL, payload)
+
+        self.assertEqual(res.status_code,status.HTTP_201_CREATED)
+
+        book = Book.objects.get(id=res.data['id'])
+        for k, v in payload.items():
+            self.assertEqual(getattr(book, k), v)
+
+        self.assertEqual(book.user, self.user)
