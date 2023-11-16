@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from core.models import Book
 from book import serializers
-
+from book.permissions import IsOwnerOrReadonly
 
 class BookViewSet(viewsets.ModelViewSet):
     '''View for manage book APIs'''
@@ -15,7 +15,7 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.BookDetailSerializer
     queryset = Book.objects.all()
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadonly]
 
     def get_queryset(self):
         '''retrive books'''
