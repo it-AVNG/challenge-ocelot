@@ -216,3 +216,14 @@ class PrivateBookAPITests(TestCase):
         self.client.patch(url, payload)
         book.refresh_from_db()
         self.assertEqual(book.user, self.user)
+
+    def test_delete_book_successful(self):
+        '''test delete method for book'''
+
+        book = create_book(user=self.user)
+
+        url = detail_url(book.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Book.objects.filter(id=book.id).exists())
