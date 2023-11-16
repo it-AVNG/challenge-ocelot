@@ -3,10 +3,11 @@ Views for the Book API
 '''
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from core.models import Book
 from book import serializers
+
 
 class BookViewSet(viewsets.ModelViewSet):
     '''View for manage book APIs'''

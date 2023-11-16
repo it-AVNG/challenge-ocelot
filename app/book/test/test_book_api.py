@@ -1,7 +1,7 @@
 '''
 Test for book api
 '''
-from decimal import Decimal
+from decimal import Decimal # noqa
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -16,9 +16,11 @@ from book.serializers import BookSerializer
 
 BOOKS_URL = reverse('book:book-list')
 
+
 def create_user(**params):
     '''create and return a new user'''
     return get_user_model().objects.create_user(**params)
+
 
 def create_book(user, **params):
     '''create and return sample book'''
@@ -32,8 +34,9 @@ def create_book(user, **params):
     defaults.update(params)
 
     book = Book.objects.create(user=user, **defaults)
-
+    return book
 # public API test
+
 
 class PublicBookAPITests(TestCase):
     '''Test unauthenticated API requests.'''
@@ -74,6 +77,7 @@ class PublicBookAPITests(TestCase):
 
 # private API test
 
+
 class PrivateBookAPITests(TestCase):
     '''Test authenticated API request.'''
 
@@ -87,4 +91,3 @@ class PrivateBookAPITests(TestCase):
         self.user = create_user(**payload)
 
         self.client.force_authenticate(self.user)
-
