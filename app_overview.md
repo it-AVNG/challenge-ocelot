@@ -4,16 +4,24 @@ Get health status of the API
 
 # Book
 Get book list /api/book/
-
 Get,put,patch,delete book
 + Get - list all book
 + Post Create book
-## specific book
-/book/isbn? or /book/id?
+
+## specific book by id
+Only owner of the book is allowed to edit the object
+anon can view the book
 + Get view details of book
 + Put/patch - update book
 + Delete - delete book
 
+### Upload image
+endpoint at /upload-image/
++ support POST
+
+dependencies: Pillow for python
++ zlib,zlib-dec
++ jpeg-dev
 
 post image /api/book/isbn/
 
