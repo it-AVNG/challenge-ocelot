@@ -1,6 +1,12 @@
 '''
 Views for the Book API
 '''
+from drf_spectacular.utils import (
+    extend_schema,
+    extend_schema_view,
+    OpenApiParameter,
+    OpenApiTypes,
+)
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,10 +26,23 @@ class BookViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadonly]
 
+    def _params_to_string(self, qs):
+        '''ensure that the query got string inputs'''
+
+        return [str(item) for item in qs.split(',')]
+
     def get_queryset(self):
         '''retrive books'''
 
-        return self.queryset.order_by('-id')
+        authors = self.request.query_params.get('authors')
+        queryset = self.queryset
+
+        if authors:
+            authors_str = self._params_to_string(authors)
+            queryset = queryset.filter(author__in=authors_str)
+            print(queryset)
+
+        return queryset.order_by('-id')
 
     def get_serializer_class(self):
         '''return the serializer class for request'''
