@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from datetime import date
 
 
 class UserManager(BaseUserManager):
@@ -61,6 +62,9 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     isbn = models.CharField(max_length=13)
     price = models.DecimalField(max_digits=5, decimal_places=2)
+    publish_date = models.DateField(blank=True,
+                                    default=date.today(),
+                                    help_text='format: YYYY-MM-DD')
     description = models.TextField(blank=True)
 
     def __str__(self):
