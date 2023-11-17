@@ -51,7 +51,6 @@ class BookViewSet(viewsets.ModelViewSet):
         if authors:
             authors_str = self._params_to_string(authors)
             queryset = queryset.filter(author__in=authors_str)
-            print(queryset)
 
         return queryset.order_by('-id')
 
