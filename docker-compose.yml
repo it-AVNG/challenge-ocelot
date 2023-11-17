@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
+      - dev-static-data:/vol/web
     command: >
       sh -c 'python manage.py wait_for_db &&
              wget -qO- https://raw.githubusercontent.com/eficode/wait-for/v2.2.3/wait-for | sh -s -- db:5432 -- echo success &&
@@ -32,4 +33,5 @@ services:
 
 volumes:
   dev-db-data:
+  dev-static-data:
 
