@@ -22,3 +22,12 @@ class BookDetailSerializer(BookSerializer):
 
     class Meta(BookSerializer.Meta):
         fields = BookSerializer.Meta.fields + ['description', 'user']
+
+class BookImageSerializer(serializers.ModelSerializer):
+    '''Serializer for uploading image to Book.'''
+
+    class Meta:
+        model = Book
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image':  {'required': 'True'}}
