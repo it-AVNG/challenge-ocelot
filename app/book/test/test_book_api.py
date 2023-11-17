@@ -258,11 +258,13 @@ class ImageUploadTests(TestCase):
     '''Test for Image upload API'''
 
     def setUp(self):
-        self.client = APIClient
-        self.user = get_user_model().objects.create_user(
-            'user@example.com',
-            'password123',
-        )
+        self.client = APIClient()
+        payload = {
+            'email': 'test@example.com',
+            'password': 'testpass@123',
+            'name': 'Test Name',
+        }
+        self.user = create_user(**payload)
         self.client.force_authenticate(self.user)
         self.book = create_book(user=self.user)
 
@@ -275,7 +277,7 @@ class ImageUploadTests(TestCase):
         url =image_upload_url(self.book.id)
 
         with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
-            img = Image.new('RBG', (10,10))
+            img = Image.new('RGB', (10,10))
             img.save(image_file, format='JPEG')
 
             image_file.seek(0)
@@ -287,7 +289,7 @@ class ImageUploadTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         self.assertIn('image',res.data)
-        self.assertTure(os.path.exists(self.book.image.path))
+        self.assertTrue(os.path.exists(self.book.image.path))
 
     def test_upload_image_bad_request(self):
         '''Test upload invalid image'''
