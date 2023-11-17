@@ -23,6 +23,7 @@ class BookDetailSerializer(BookSerializer):
     class Meta(BookSerializer.Meta):
         fields = BookSerializer.Meta.fields + ['description', 'user']
 
+
 class BookImageSerializer(serializers.ModelSerializer):
     '''Serializer for uploading image to Book.'''
 
