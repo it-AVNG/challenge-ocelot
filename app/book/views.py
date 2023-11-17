@@ -18,6 +18,17 @@ from book import serializers
 from book.permissions import IsOwnerOrReadonly
 
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'author',
+                OpenApiTypes.STR,
+                description='Comma separated list of author to filter'
+            )
+        ]
+    )
+)
 class BookViewSet(viewsets.ModelViewSet):
     '''View for manage book APIs'''
 
