@@ -253,6 +253,25 @@ class PrivateBookAPITests(TestCase):
         # self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
         self.assertTrue(Book.objects.filter(id=book.id).exists())
 
+    def test_filter_by_author(self):
+        '''Test filtering Book by author'''
+
+        book1 = create_book(user=self.user, title='NewBook test', author='Book1 Author')
+        book2 = create_book(user=self.user, title='New2Book test2', author='Book2 Authorin')
+        book3 = create_book(user=self.user, title='New2Book test2', author='Book3 Authorinen')
+
+        params = {'author': f'{book1.author}, {book2.author}'}
+        res = self.client.get(BOOKS_URL, params)
+
+        s1 = BookSerializer(book1)
+        s2 = BookSerializer(book2)
+        s3 = BookSerializer(book2)
+
+        self.assertIn(s1.data, res.data)
+        self.assertIn(s2.data, res.data)
+        self.assertNotIn(s3.data, res.data)
+
+
 
 class ImageUploadTests(TestCase):
     '''Test for Image upload API'''
