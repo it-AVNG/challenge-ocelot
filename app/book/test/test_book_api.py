@@ -256,21 +256,26 @@ class PrivateBookAPITests(TestCase):
     def test_filter_by_author(self):
         '''Test filtering Book by author'''
 
-        book1 = create_book(user=self.user, title='NewBook test', author='Book1 Author')
-        book2 = create_book(user=self.user, title='New2Book test2', author='Book2 Authorin')
-        book3 = create_book(user=self.user, title='New2Book test2', author='Book3 Authorinen')
+        book1 = create_book(user=self.user,
+                            title='NewBook test',
+                            author='Book1 Author')
+        book2 = create_book(user=self.user,
+                            title='New2Book test2',
+                            author='Book2 Authorin')
+        book3 = create_book(user=self.user,
+                            title='New3Book test3',
+                            author='Book3 Authorinen')
 
-        params = {'author': f'{book1.author}, {book2.author}'}
+        params = {'authors': f'{book1.author},{book2.author}'}
         res = self.client.get(BOOKS_URL, params)
 
         s1 = BookSerializer(book1)
         s2 = BookSerializer(book2)
-        s3 = BookSerializer(book2)
+        s3 = BookSerializer(book3)
 
         self.assertIn(s1.data, res.data)
         self.assertIn(s2.data, res.data)
         self.assertNotIn(s3.data, res.data)
-
 
 
 class ImageUploadTests(TestCase):
