@@ -59,21 +59,33 @@ to create super user, we use the following `docker-compose` command
 ```shell
 docker-compose run --rm app sh -c "python manage.py createsuperuser"
 ```
-
 Follow the prompt instructions and you have successfully create an adminstrator for the app.
-Now you can run to get the local server start serving the application.
+
+to run tests
+
+```shell
+docker-compose run --rm app sh -c "python manage.py test"
+```
+
+to run Linting
+
+```shell
+docker-compose run --rm app sh -c "flake8"
+```
+
+To spin the container back up
 ```shell
 docker-compose up
 ```
 you can navigate to `127.0.0.1:8000/admin` to login to the admin app.
 
-**Note**: it is necessary to add the options to the `docker-compose run` command because it is preventing build up of the images on your machine.
+**Note**: it is necessary to add the options to the `docker-compose run` command because it is preventing built-up of the images inside your machine.
 
 ## Step4: spin down the app
 
 As we have finished with the app, we can spin the container down using
 
 ```shell
-docker-compse down
+docker-compose down
 ```
 
