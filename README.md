@@ -4,7 +4,6 @@ Develop a RESTful API using Django or FastAPI framework that manages a simple "B
 ## Requirements:
 
 ### Documentation:
-- Live website links at : [amazon_site](http://ec2-54-254-200-121.ap-southeast-1.compute.amazonaws.com/api/docs/)
 - Instructions on how to set up and run the application locally [install_localy.md](https://github.com/it-AVNG/challenge-ocelot/blob/main/install_locally.md)
 
 #### API Functionality:
